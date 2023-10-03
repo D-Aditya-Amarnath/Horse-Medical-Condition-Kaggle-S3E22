@@ -75,10 +75,10 @@ The dataset consists of the following attributes:
 
 ## Model accuracy after hypertunning
 
-     * CatboostClassifier - 73%
-     * LgbmClassifier - 73%
-     * XBGClassifier - 75%
-     * EnsembleLearning
+     > CatboostClassifier - 73%
+     > LgbmClassifier - 73%
+     > XBGClassifier - 75%
+     > EnsembleLearning
           1. Voting - 73%
           2. Stacking - 72%
 
