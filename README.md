@@ -1,231 +1,92 @@
-# Kaggle_S3E22
+# Horse Medical Condition Prediction
 
-## Description:
+## Overview
 
-Predict whether or not a horse can survive based upon past medical conditions.
+This repository contains a dataset and code for predicting the outcome of horses' medical conditions based on various attributes. The goal is to determine whether a horse will survive or not based on past medical information.
 
-Noted by the "outcome" variable in the data.
+## Dataset
 
-Content:
+The dataset consists of the following attributes:
 
-All of the binary representation have been converted into the words they actually represent. However, a fuller description is provided by the data dictionary (datadict.txt).
+1. **surgery:** Indicates whether the horse had surgery (1 = Yes, it had surgery; 2 = It was treated without surgery).
+2. **Age:** Indicates whether the horse is an adult (1 = Adult horse) or young (< 6 months) (2 = Young horse).
+3. **Hospital Number:** A numeric ID representing the case number assigned to the horse (may not be unique if the horse is treated more than once).
+4. **Rectal Temperature:** The horse's rectal temperature in degrees Celsius. Elevated temperature may be a sign of infection.
+5. **Pulse:** The heart rate in beats per minute. Reflects the horse's heart condition.
+6. **Respiratory Rate:** The horse's respiratory rate, which is normally between 8 to 10.
+7. **Temperature of Extremities:** A subjective indication of peripheral circulation (1 = Normal, 2 = Warm, 3 = Cool, 4 = Cold).
+8. **Peripheral Pulse:** A subjective measurement of peripheral pulse (1 = Normal, 2 = Increased, 3 = Reduced, 4 = Absent).
+9. **Mucous Membranes:** A subjective measurement of mucous membrane color (1 = Normal pink, 2 = Bright pink, 3 = Pale pink, 4 = Pale cyanotic, 5 = Bright red / injected, 6 = Dark cyanotic).
+10. **Capillary Refill Time:** A clinical judgment of capillary refill time (1 = < 3 seconds, 2 = >= 3 seconds).
+11. **Pain:** A subjective judgment of the horse's pain level (1 = Alert, no pain, 2 = Depressed, 3 = Intermittent mild pain, 4 = Intermittent severe pain, 5 = Continuous severe pain).
+12. **Peristalsis:** An indication of the activity in the horse's gut (1 = Hypermotile, 2 = Normal, 3 = Hypomotile, 4 = Absent).
+13. **Abdominal Distension:** An important parameter indicating the level of abdominal distension (1 = None, 2 = Slight, 3 = Moderate, 4 = Severe).
+14. **Nasogastric Tube:** Presence and amount of gas coming out of the nasogastric tube (1 = None, 2 = Slight, 3 = Significant).
+15. **Nasogastric Reflux:** The amount of nasogastric reflux (1 = None, 2 = > 1 liter, 3 = < 1 liter).
+16. **Nasogastric Reflux PH:** The pH level of nasogastric reflux.
+17. **Rectal Examination - Feces:** Indicates the presence and condition of feces (1 = Normal, 2 = Increased, 3 = Decreased, 4 = Absent).
+18. **Abdomen:** Describes the condition of the abdomen (1 = Normal, 2 = Other, 3 = Firm feces in the large intestine, 4 = Distended small intestine, 5 = Distended large intestine).
+19. **Packed Cell Volume:** The number of red cells by volume in the blood. Normal range is 30 to 50.
+20. **Total Protein:** The total protein level in the blood.
+21. **Abdominocentesis Appearance:** Describes the appearance of fluid obtained from the abdominal cavity (1 = Clear, 2 = Cloudy, 3 = Serosanguinous).
+22. **Abdominocentesis Total Protein:** The level of protein in the abdominal fluid.
+23. **Outcome:** Indicates what eventually happened to the horse (1 = Lived, 2 = Died, 3 = Was euthanized).
+24. **Surgical Lesion:** Indicates retrospectively whether the problem (lesion) was surgical (1 = Yes, 2 = No).
+25-27. **Type of Lesion:** Describes the site, type, and subtype of lesion.
+28. **cp_data:** Indicates whether pathology data is present for this case (1 = Yes, 2 = No).
 
-There are a lot of NA's in the data. This is the real struggle here. Try to find a way around it through imputation or other means.
+## Repository Structure
 
-Attribute Information:
+- **data** The dataset containing the original as well as syntheically generated horse medical condition information.
+- **horse_medical_condition.ipynb:** Jupyter Notebook containing the code for data exploration, preprocessing, and model training.
+- **README.md:** This README file providing an overview of the dataset and repository.
 
-Additional Information
+## Model Accuracy before hypertunning
 
-  1:  surgery?
-          1 = Yes, it had surgery
-          2 = It was treated without surgery
+| Model                        | Accuracy | Balanced Accuracy | ROC AUC | F1 Score | Time Taken (s) |
+|------------------------------|----------|--------------------|---------|----------|-----------------|
+| RandomForestClassifier       | 0.73     | 0.72               | None    | 0.73     | 0.60            |
+| BaggingClassifier            | 0.68     | 0.68               | None    | 0.68     | 0.23            |
+| NearestCentroid              | 0.68     | 0.68               | None    | 0.69     | 0.02            |
+| LinearDiscriminantAnalysis   | 0.70     | 0.67               | None    | 0.70     | 0.03            |
+| GaussianNB                   | 0.68     | 0.67               | None    | 0.69     | 0.03            |
+| BernoulliNB                  | 0.68     | 0.67               | None    | 0.68     | 0.02            |
+| LinearSVC                    | 0.70     | 0.67               | None    | 0.70     | 0.45            |
+| KNeighborsClassifier         | 0.69     | 0.67               | None    | 0.69     | 0.04            |
+| ExtraTreesClassifier         | 0.70     | 0.67               | None    | 0.69     | 0.49            |
+| AdaBoostClassifier           | 0.68     | 0.66               | None    | 0.68     | 0.25            |
+| RidgeClassifier              | 0.70     | 0.66               | None    | 0.70     | 0.03            |
+| CalibratedClassifierCV       | 0.70     | 0.66               | None    | 0.69     | 0.19            |
+| XGBClassifier                | 0.68     | 0.66               | None    | 0.68     | 0.55            |
+| QuadraticDiscriminantAnalysis| 0.67     | 0.66               | None    | 0.67     | 0.05            |
+| LogisticRegression           | 0.69     | 0.66               | None    | 0.68     | 0.06            |
+| RidgeClassifierCV            | 0.69     | 0.65               | None    | 0.69     | 0.03            |
+| LGBMClassifier               | 0.68     | 0.65               | None    | 0.68     | 0.48            |
+| SVC                          | 0.69     | 0.65               | None    | 0.68     | 0.13            |
+| SGDClassifier                | 0.67     | 0.65               | None    | 0.67     | 0.07            |
+| NuSVC                        | 0.68     | 0.64               | None    | 0.68     | 0.15            |
+| DecisionTreeClassifier       | 0.65     | 0.64               | None    | 0.65     | 0.05            |
+| LabelPropagation             | 0.64     | 0.62               | None    | 0.64     | 0.14            |
+| LabelSpreading               | 0.64     | 0.62               | None    | 0.64     | 0.13            |
+| PassiveAggressiveClassifier  | 0.64     | 0.62               | None    | 0.64     | 0.03            |
+| Perceptron                   | 0.63     | 0.60               | None    | 0.63     | 0.02            |
+| ExtraTreeClassifier          | 0.58     | 0.55               | None    | 0.58     | 0.03            |
+| DummyClassifier              | 0.47     | 0.33               | None    | 0.30     | 0.02            |
 
-  2:  Age 
-          1 = Adult horse
-          2 = Young (< 6 months)
+## Model accuracy after hypertunning
 
-  3:  Hospital Number 
-          - numeric id
-          - the case number assigned to the horse (may not be unique if the horse is treated > 1 time)
+     * CatboostClassifier - 73%
+     * LgbmClassifier - 73%
+     * XBGClassifier - 75%
+     * EnsembleLearning
+          1. Voting - 73%
+          2. Stacking - 72%
 
-  4:  rectal temperature
-          - linear
-          - in degrees celsius.
-          - An elevated temp may occur due to infection.
-          - temperature may be reduced when the animal is in late shock
-          - normal temp is 37.8
-          - this parameter will usually change as the problem progresses, eg. may start out normal, then become elevated because of the lesion, passing back through the normal range as the horse goes into shock
-  5:  pulse 
-          - linear
-          - the heart rate in beats per minute
-          - is a reflection of the heart condition: 30 -40 is normal for adults
-          - rare to have a lower than normal rate although athletic horses may have a rate of 20-25
-          - animals with painful lesions or suffering from circulatory shock may have an elevated heart rate
+## Final Result:
 
-  6:  respiratory rate
-          - linear
-          - normal rate is 8 to 10
-          - usefulness is doubtful due to the great fluctuations
+Ranked in Top 20% in the competition 
 
-  7:  temperature of extremities
-          - a subjective indication of peripheral circulation
-          - possible values:
-               1 = Normal
-               2 = Warm
-               3 = Cool
-               4 = Cold
-          - cool to cold extremities indicate possible shock
-          - hot extremities should correlate with an elevated rectal temp.
 
-  8:  peripheral pulse
-          - subjective
-          - possible values are:
-               1 = normal
-               2 = increased
-               3 = reduced
-               4 = absent
-          - normal or increased p.p. are indicative of adequate circulation while reduced or absent indicate poor perfusion
+## Note
 
-  9:  mucous membranes
-          - a subjective measurement of colour
-          - possible values are:
-               1 = normal pink
-               2 = bright pink
-               3 = pale pink
-               4 = pale cyanotic
-               5 = bright red / injected
-               6 = dark cyanotic
-          - 1 and 2 probably indicate a normal or slightly increased circulation
-          - 3 may occur in early shock
-          - 4 and 6 are indicative of serious circulatory compromise
-          - 5 is more indicative of a septicemia
-
- 10: capillary refill time
-          - a clinical judgement. The longer the refill, the poorer the circulation
-          - possible values
-               1 = < 3 seconds
-               2 = >= 3 seconds
-
- 11: pain - a subjective judgement of the horse's pain level
-          - possible values:
-               1 = alert, no pain
-               2 = depressed
-               3 = intermittent mild pain
-               4 = intermittent severe pain
-               5 = continuous severe pain
-          - should NOT be treated as a ordered or discrete variable!
-          - In general, the more painful, the more likely it is to require surgery
-          - prior treatment of pain may mask the pain level to some extent
-
- 12: peristalsis                              
-          - an indication of the activity in the horse's gut. As the gut becomes more distended or the horse becomes more toxic, the activity decreases
-          - possible values:
-               1 = hypermotile
-               2 = normal
-               3 = hypomotile
-               4 = absent
-
- 13: abdominal distension
-          - An IMPORTANT parameter.
-          - possible values
-               1 = none
-               2 = slight
-               3 = moderate
-               4 = severe
-          - an animal with abdominal distension is likely to be painful and have reduced gut motility.
-          - a horse with severe abdominal distension is likely to require surgery just tio relieve the pressure
-
- 14: nasogastric tube
-          - this refers to any gas coming out of the tube
-          - possible values:
-               1 = none
-               2 = slight
-               3 = significant
-          - a large gas cap in the stomach is likely to give the horse discomfort
-
- 15: nasogastric reflux
-          - possible values
-               1 = none
-               2 = > 1 liter
-               3 = < 1 liter
-          - the greater amount of reflux, the more likelihood that there is some serious obstruction to the fluid passage from the rest of the intestine
-
- 16: nasogastric reflux PH
-          - linear
-          - scale is from 0 to 14 with 7 being neutral
-          - normal values are in the 3 to 4 range
-
- 17: rectal examination - feces
-          - possible values
-               1 = normal
-               2 = increased
-               3 = decreased
-               4 = absent
-          - absent feces probably indicates an obstruction
-
- 18: abdomen
-          - possible values
-               1 = normal
-               2 = other
-               3 = firm feces in the large intestine
-               4 = distended small intestine
-               5 = distended large intestine
-          - 3 is probably an obstruction caused by a mechanical impaction and is normally treated medically
-          - 4 and 5 indicate a surgical lesion
-
- 19: packed cell volume
-          - linear
-          - the # of red cells by volume in the blood
-          - normal range is 30 to 50. The level rises as the circulation becomes compromised or as the animal becomes dehydrated.
-
- 20: total protein
-          - linear
-          - normal values lie in the 6-7.5 (gms/dL) range
-          - the higher the value the greater the dehydration
-
- 21: abdominocentesis appearance
-          - a needle is put in the horse's abdomen and fluid is obtained from
-            the abdominal cavity
-          - possible values:
-               1 = clear
-               2 = cloudy
-               3 = serosanguinous
-          - normal fluid is clear while cloudy or serosanguinous indicates a compromised gut
-
- 22: abdomcentesis total protein
-          - linear
-          - the higher the level of protein the more likely it is to have a compromised gut. Values are in gms/dL
-
- 23: outcome
-          - what eventually happened to the horse?
-          - possible values:
-               1 = lived
-               2 = died
-               3 = was euthanized
-
- 24: surgical lesion?
-          - retrospectively, was the problem (lesion) surgical?
-          - all cases are either operated upon or autopsied so that this value and the lesion type are always known
-          - possible values:
-               1 = Yes
-               2 = No
-
- 25, 26, 27: type of lesion
-          - first number is site of lesion
-               1 = gastric
-               2 = sm intestine
-               3 = lg colon
-               4 = lg colon and cecum
-               5 = cecum
-               6 = transverse colon
-               7 = retum/descending colon
-               8 = uterus
-               9 = bladder
-               11 = all intestinal sites
-               00 = none
-          - second number is type
-               1 = simple
-               2 = strangulation
-               3 = inflammation
-               4 = other
-          - third number is subtype
-               1 = mechanical
-               2 = paralytic
-               0 = n/a
-          - fourth number is specific code
-               1 = obturation
-               2 = intrinsic
-               3 = extrinsic
-               4 = adynamic
-               5 = volvulus/torsion
-               6 = intussuption
-               7 = thromboembolic
-               8 = hernia
-               9 = lipoma/slenic incarceration
-               10 = displacement
-               0 = n/a
- 28: cp_data
-          - is pathology data present for this case?
-               1 = Yes
-               2 = No
-          - this variable is of no significance since pathology data is not included or collected for these cases
+This dataset is for educational and research purposes and should be used responsibly. The goal is to predict horse outcomes based on medical conditions, which can be a valuable task for veterinarians and researchers in the field of animal health.
